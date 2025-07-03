@@ -5,6 +5,8 @@ import java.util.Scanner;
 public class TicTacToe {
     final static int xSign = 10; // this number will represent the x sign
     final static int oSign = 20; // this number will represent the O sign
+    final static int min = 0, max = 8; // for random number range
+    static int numberOfOccupied = 0;
 
     public static void main(String[] args) {
 /*
@@ -22,14 +24,12 @@ public class TicTacToe {
 
         Scanner input = new Scanner(System.in);
         String choice;
-        int min, max; // for random number range
         int round = 0; // for the current round being played
-        boolean won = false; // checking if there is a win case
         boolean incorrectSelection = true; // for enforcing correct selections
-        int whoWon; // store the number of the sign of the winner 10 for X or 20 for O
+        int whoWon; // store the number of the sign of the winner 10 for X or 20 for Oh
         int userSign = 0; // the sign is either 10 = X or 20 = O not zero but oh
         int computerSign = 0; // the sign is either 10 = X or 20 = O not zero but oh
-        int userPoints, computerPoints; // for comparing who won more!
+        int userPoints = 0, computerPoints = 0; // for comparing who won more!
         int selectedPosition = -1;
 
         printHeaderFooter("Welcome to the Tic-tac-toe game!");
@@ -101,26 +101,55 @@ public class TicTacToe {
                 }
             } while (incorrectSelection);
 
+            printBoard(gameBoard); // print it again after user has selected a position
+            whoWon = whoWon(gameBoard); // check who won the game
+
+            if (whoWon == userSign) {
+                printHeaderFooter("Congratulations, you have won the game!");
+                userPoints++;
+                break;
+            } else if (whoWon == computerSign) {
+                printHeaderFooter("Bad Luck, the computer has won the game!");
+                computerPoints++;
+                break;
+            } else if (numberOfOccupied > 8){ //no one has won the game
+                printHeaderFooter("No more positions, it is a draw!");
+                break;
+            }
+
             incorrectSelection = true; //assume incorrect selections for the upcoming logic
+            printHeaderFooter("Computer's turn:");
+            System.out.println("Please wait for the computer to think . . .");
+//        6- Computer chose random position and check valid position.
+
+            do { // make the computer try again and again until its randomly selected position is not occupied
+                try {
+                    selectedPosition = randomNumber(min,max); // not really thinking or anything
+                    incorrectSelection = isOccupiedAndSet(selectedPosition, computerSign,gameBoard);
+
+                } catch (InputMismatchException e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("Enter a valid number");
+                } catch (Exception e) {
+                    System.out.println("An error occurred :(");
+                    System.out.println(e.getMessage());
+                }
+
+            } while (incorrectSelection);
 
             printBoard(gameBoard); // print it again after user has selected a position
-            //TODO check if won! after each turn
-            whoWon = whoWon(gameBoard);
-
-            printHeaderFooter("Computer's turn:");
-//        6- Computer chose random position and check valid position.
-            whoWon = whoWon(gameBoard);
+            whoWon = whoWon(gameBoard); // check who won the game
 
 //        7- Checks if either player or Computer has won.
-            if (whoWon == userSign){
+            if (whoWon == userSign) {
                 won = true;
                 printHeaderFooter("Congratulations, you have won the game!");
-            }
-            if (whoWon == computerSign){
+            } else if (whoWon == computerSign) {
                 won = true;
                 printHeaderFooter("Bad Luck, the computer has won the game!");
             }
-        } while (!won); // the game loop
+
+        } while (true); // the game loop
 
         printHeaderFooter("Game Over!");
 
@@ -128,6 +157,12 @@ public class TicTacToe {
     } // End of Main
 
     //        2- Use method.
+    public static int whoWon(int[][] board) {
+        int whoWon = -1; // no one has won if it does not equal to the sign number 10 = X 20 = O
+
+        return whoWon;
+    }
+
     public static int randomNumber(int min, int max) {
         Random rand = new Random();
         return rand.nextInt(min, max);
@@ -232,6 +267,7 @@ public class TicTacToe {
             case 0:
                 if (gameBoard[0][0] == 0) { // it is not occupied
                     gameBoard[0][0] = playerSign;
+                    numberOfOccupied++;
                     return false;
                 } else { // it is already occupied
                     return true;
@@ -239,6 +275,7 @@ public class TicTacToe {
             case 1:
                 if (gameBoard[0][1] == 1) { // it is not occupied
                     gameBoard[0][1] = playerSign;
+                    numberOfOccupied++;
                     return false;
                 } else { // it is already occupied
                     return true;
@@ -246,6 +283,7 @@ public class TicTacToe {
             case 2:
                 if (gameBoard[0][2] == 2) { // it is not occupied
                     gameBoard[0][2] = playerSign;
+                    numberOfOccupied++;
                     return false;
                 } else { // it is already occupied
                     return true;
@@ -253,6 +291,7 @@ public class TicTacToe {
             case 3:
                 if (gameBoard[1][0] == 3) { // it is not occupied
                     gameBoard[1][0] = playerSign;
+                    numberOfOccupied++;
                     return false;
                 } else { // it is already occupied
                     return true;
@@ -260,6 +299,7 @@ public class TicTacToe {
             case 4:
                 if (gameBoard[1][1] == 4) { // it is not occupied
                     gameBoard[1][1] = playerSign;
+                    numberOfOccupied++;
                     return false;
                 } else { // it is already occupied
                     return true;
@@ -267,6 +307,7 @@ public class TicTacToe {
             case 5:
                 if (gameBoard[1][2] == 5) { // it is not occupied
                     gameBoard[1][2] = playerSign;
+                    numberOfOccupied++;
                     return false;
                 } else { // it is already occupied
                     return true;
@@ -274,6 +315,7 @@ public class TicTacToe {
             case 6:
                 if (gameBoard[2][0] == 6) { // it is not occupied
                     gameBoard[2][0] = playerSign;
+                    numberOfOccupied++;
                     return false;
                 } else { // it is already occupied
                     return true;
@@ -281,6 +323,7 @@ public class TicTacToe {
             case 7:
                 if (gameBoard[2][1] == 7) { // it is not occupied
                     gameBoard[2][1] = playerSign;
+                    numberOfOccupied++;
                     return false;
                 } else { // it is already occupied
                     return true;
@@ -288,6 +331,7 @@ public class TicTacToe {
             case 8:
                 if (gameBoard[2][2] == 8) { // it is not occupied
                     gameBoard[2][2] = playerSign;
+                    numberOfOccupied++;
                     return false;
                 } else { // it is already occupied
                     return true;
