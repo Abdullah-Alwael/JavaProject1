@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -9,7 +10,7 @@ public class TicTacToe {
 /*
         * Rules & Guidelines
           • should use all java basics concept:
-          * {Variables}, {Scanner}, {Conditions}, {Loops}, {Arrays}, {Methods}, exception handling, switch.
+          * {Variables}, {Scanner}, {Conditions}, {Loops}, {Arrays}, {Methods}, {exception handling}, {switch}.
  */
 
 //        Minimum Requirements
@@ -20,27 +21,139 @@ public class TicTacToe {
                 {6, 7, 8}}; // the numbers represent the position number to ask the user
 
         Scanner input = new Scanner(System.in);
+        String choice;
         int min, max; // for random number range
-        int round; // for the current round being played
-        boolean won; // checking if there is a win case
-        int whoWon; // store the number of the sign of the winner
-        int userSign; // the sign is either 10 = X or 20 = O not zero but oh
-        int computerSign; // the sign is either 10 = X or 20 = O not zero but oh
-        int userPoints, computerPoints;
+        int round = 0; // for the current round being played
+        boolean won = false; // checking if there is a win case
+        boolean incorrectSelection =true; // for enforcing correct selections
+        int whoWon; // store the number of the sign of the winner 10 for X or 20 for O
+        int userSign = 0; // the sign is either 10 = X or 20 = O not zero but oh
+        int computerSign = 0; // the sign is either 10 = X or 20 = O not zero but oh
+        int userPoints, computerPoints; // for comparing who won more!
+        int selectedPosition = -1;
 
-//        3- Should Display a Game Board.
         printHeaderFooter("Welcome to the Tic-tac-toe game!");
         printGameRules();
-        printBoard(gameBoard);
-//        do {
+
 
 //        4- Ask player position.
-//        5- Check if the position available, if not available keep asking the player to enter a
-//        valid position.
+        System.out.println("which sign will you choose? (X or O):");
+
+        try {
+            choice = input.next();
+
+            switch (choice.charAt(0)) {
+                case 'X':
+                case 'x':
+                    userSign = xSign;
+                    computerSign = oSign;
+                    break;
+                case '0':
+                case 'o':
+                case 'O':
+                    userSign = oSign;
+                    computerSign = xSign;
+                    break;
+                default:
+                    throw new InputMismatchException("This is not X or O, please try again");
+            }
+
+        } catch (InputMismatchException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An error occurred :(");
+            System.out.println(e.getMessage());
+        }
+
+        do {
+
+//        3- Should Display a Game Board.
+            printBoard(gameBoard);
+
+//        5- Check if the position available, if not available keep asking the player to enter a valid position.
+            System.out.println("Select a position from the numbers displayed on the board: ");
+            try{
+                selectedPosition = input.nextInt();
+                switch (selectedPosition){
+                    case 0:
+                        if(gameBoard[0][0] == 0){ // it is not occupied
+                            gameBoard[0][0] = userSign;
+                        } else { // it is already occupied
+                            System.out.println("Position is already occupied, choose another one");
+                        }
+                        break;
+                    case 1:
+                        if(gameBoard[0][1] == 1){ // it is not occupied
+                            gameBoard[0][1] = userSign;
+                        } else { // it is already occupied
+                            System.out.println("Position is already occupied, choose another one");
+                        }
+                        break;
+                    case 2:
+                        if(gameBoard[0][2] == 2){ // it is not occupied
+                            gameBoard[0][2] = userSign;
+                        } else { // it is already occupied
+                            System.out.println("Position is already occupied, choose another one");
+                        }
+                        break;
+                    case 3:
+                        if(gameBoard[1][0] == 3){ // it is not occupied
+                            gameBoard[1][0] = userSign;
+                        } else { // it is already occupied
+                            System.out.println("Position is already occupied, choose another one");
+                        }
+                        break;
+                    case 4:
+                        if(gameBoard[1][1] == 4){ // it is not occupied
+                            gameBoard[1][1] = userSign;
+                        } else { // it is already occupied
+                            System.out.println("Position is already occupied, choose another one");
+                        }
+                        break;
+                    case 5:
+                        if(gameBoard[1][2] == 5){ // it is not occupied
+                            gameBoard[1][2] = userSign;
+                        } else { // it is already occupied
+                            System.out.println("Position is already occupied, choose another one");
+                        }
+                        break;
+                    case 6:
+                        if(gameBoard[2][0] == 6){ // it is not occupied
+                            gameBoard[2][0] = userSign;
+                        } else { // it is already occupied
+                            System.out.println("Position is already occupied, choose another one");
+                        }
+                        break;
+                    case 7:
+                        if(gameBoard[2][1] == 7){ // it is not occupied
+                            gameBoard[2][1] = userSign;
+                        } else { // it is already occupied
+                            System.out.println("Position is already occupied, choose another one");
+                        }
+                        break;
+                    case 8:
+                        if(gameBoard[2][2] == 8){ // it is not occupied
+                            gameBoard[2][2] = userSign;
+                        } else { // it is already occupied
+                            System.out.println("Position is already occupied, choose another one");
+                        }
+                        break;
+                    default:
+                        throw new InputMismatchException("Invalid Position!");
+                }
+            }catch (InputMismatchException e){
+                System.out.println("Enter a valid number");
+            } catch (Exception e){
+                System.out.println("An error occurred :(");
+                System.out.println(e.getMessage());
+            }
+
+
+
 //        6- Computer chose random position and check valid position.
 //        7- Checks if either player or Computer has won.
 //
-//        } while (true); // the game loop
+        } while (!won); // the game loop
 
         printHeaderFooter("Game Over!");
 
@@ -55,7 +168,22 @@ public class TicTacToe {
 
     public static void printBoard(int[][] board) {
         int verticalLines = 2;
+        int horizontalLines = 6;
+
         for (int[] raw : board) {
+
+            if (horizontalLines > 0) {
+                for (int j = 0; j <= 85; j++) { // add vertical lines
+                    if (j == 34 || j == 57) {
+                        System.out.print("+");
+                    } else {
+                        System.out.print(" ");
+                    }
+                }
+                horizontalLines--;
+                System.out.println();
+            }
+
             for (int i : raw) {
                 for (int j = 0; j <= 21; j++) { // add spaces
                     if (j == 11) {
