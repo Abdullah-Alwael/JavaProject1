@@ -25,7 +25,7 @@ public class TicTacToe {
         int min, max; // for random number range
         int round = 0; // for the current round being played
         boolean won = false; // checking if there is a win case
-        boolean incorrectSelection =true; // for enforcing correct selections
+        boolean incorrectSelection = true; // for enforcing correct selections
         int whoWon; // store the number of the sign of the winner 10 for X or 20 for O
         int userSign = 0; // the sign is either 10 = X or 20 = O not zero but oh
         int computerSign = 0; // the sign is either 10 = X or 20 = O not zero but oh
@@ -36,34 +36,39 @@ public class TicTacToe {
         printGameRules();
 
 
-//        4- Ask player position.
+//        4- Ask player position. sign?
         System.out.println("which sign will you choose? (X or O):");
+        do { // force user to select correct sign
+            try {
+                choice = input.next();
 
-        try {
-            choice = input.next();
+                switch (choice.charAt(0)) {
+                    case 'X':
+                    case 'x':
+                        userSign = xSign;
+                        computerSign = oSign;
+                        incorrectSelection = false;
+                        break;
+                    case '0':
+                    case 'o':
+                    case 'O':
+                        userSign = oSign;
+                        computerSign = xSign;
+                        incorrectSelection = false;
+                        break;
+                    default:
+                        throw new InputMismatchException("This is not X or O, please try again");
+                }
 
-            switch (choice.charAt(0)) {
-                case 'X':
-                case 'x':
-                    userSign = xSign;
-                    computerSign = oSign;
-                    break;
-                case '0':
-                case 'o':
-                case 'O':
-                    userSign = oSign;
-                    computerSign = xSign;
-                    break;
-                default:
-                    throw new InputMismatchException("This is not X or O, please try again");
+            } catch (InputMismatchException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("An error occurred :(");
+                System.out.println(e.getMessage());
             }
+        } while (incorrectSelection);
 
-        } catch (InputMismatchException e) {
-            System.out.println(e.getMessage());
-        } catch (Exception e) {
-            System.out.println("An error occurred :(");
-            System.out.println(e.getMessage());
-        }
+        incorrectSelection = true; //assume incorrect selections for the upcoming logic
 
         do {
 
@@ -71,85 +76,100 @@ public class TicTacToe {
             printBoard(gameBoard);
 
 //        5- Check if the position available, if not available keep asking the player to enter a valid position.
+            printHeaderFooter("Your turn:");
             System.out.println("Select a position from the numbers displayed on the board: ");
-            try{
-                selectedPosition = input.nextInt();
-                switch (selectedPosition){
-                    case 0:
-                        if(gameBoard[0][0] == 0){ // it is not occupied
-                            gameBoard[0][0] = userSign;
-                        } else { // it is already occupied
-                            System.out.println("Position is already occupied, choose another one");
-                        }
-                        break;
-                    case 1:
-                        if(gameBoard[0][1] == 1){ // it is not occupied
-                            gameBoard[0][1] = userSign;
-                        } else { // it is already occupied
-                            System.out.println("Position is already occupied, choose another one");
-                        }
-                        break;
-                    case 2:
-                        if(gameBoard[0][2] == 2){ // it is not occupied
-                            gameBoard[0][2] = userSign;
-                        } else { // it is already occupied
-                            System.out.println("Position is already occupied, choose another one");
-                        }
-                        break;
-                    case 3:
-                        if(gameBoard[1][0] == 3){ // it is not occupied
-                            gameBoard[1][0] = userSign;
-                        } else { // it is already occupied
-                            System.out.println("Position is already occupied, choose another one");
-                        }
-                        break;
-                    case 4:
-                        if(gameBoard[1][1] == 4){ // it is not occupied
-                            gameBoard[1][1] = userSign;
-                        } else { // it is already occupied
-                            System.out.println("Position is already occupied, choose another one");
-                        }
-                        break;
-                    case 5:
-                        if(gameBoard[1][2] == 5){ // it is not occupied
-                            gameBoard[1][2] = userSign;
-                        } else { // it is already occupied
-                            System.out.println("Position is already occupied, choose another one");
-                        }
-                        break;
-                    case 6:
-                        if(gameBoard[2][0] == 6){ // it is not occupied
-                            gameBoard[2][0] = userSign;
-                        } else { // it is already occupied
-                            System.out.println("Position is already occupied, choose another one");
-                        }
-                        break;
-                    case 7:
-                        if(gameBoard[2][1] == 7){ // it is not occupied
-                            gameBoard[2][1] = userSign;
-                        } else { // it is already occupied
-                            System.out.println("Position is already occupied, choose another one");
-                        }
-                        break;
-                    case 8:
-                        if(gameBoard[2][2] == 8){ // it is not occupied
-                            gameBoard[2][2] = userSign;
-                        } else { // it is already occupied
-                            System.out.println("Position is already occupied, choose another one");
-                        }
-                        break;
-                    default:
-                        throw new InputMismatchException("Invalid Position!");
+            do {
+                try {
+                    selectedPosition = input.nextInt();
+                    switch (selectedPosition) {
+                        case 0:
+                            if (gameBoard[0][0] == 0) { // it is not occupied
+                                gameBoard[0][0] = userSign;
+                                incorrectSelection = false;
+                            } else { // it is already occupied
+                                System.out.println("Position 0 is already occupied, choose another one");
+                            }
+                            break;
+                        case 1:
+                            if (gameBoard[0][1] == 1) { // it is not occupied
+                                gameBoard[0][1] = userSign;
+                                incorrectSelection = false;
+                            } else { // it is already occupied
+                                System.out.println("Position 1 is already occupied, choose another one");
+                            }
+                            break;
+                        case 2:
+                            if (gameBoard[0][2] == 2) { // it is not occupied
+                                gameBoard[0][2] = userSign;
+                                incorrectSelection = false;
+                            } else { // it is already occupied
+                                System.out.println("Position 2 is already occupied, choose another one");
+                            }
+                            break;
+                        case 3:
+                            if (gameBoard[1][0] == 3) { // it is not occupied
+                                gameBoard[1][0] = userSign;
+                                incorrectSelection = false;
+                            } else { // it is already occupied
+                                System.out.println("Position 3 is already occupied, choose another one");
+                            }
+                            break;
+                        case 4:
+                            if (gameBoard[1][1] == 4) { // it is not occupied
+                                gameBoard[1][1] = userSign;
+                                incorrectSelection = false;
+                            } else { // it is already occupied
+                                System.out.println("Position 4 is already occupied, choose another one");
+                            }
+                            break;
+                        case 5:
+                            if (gameBoard[1][2] == 5) { // it is not occupied
+                                gameBoard[1][2] = userSign;
+                                incorrectSelection = false;
+                            } else { // it is already occupied
+                                System.out.println("Position 5 is already occupied, choose another one");
+                            }
+                            break;
+                        case 6:
+                            if (gameBoard[2][0] == 6) { // it is not occupied
+                                gameBoard[2][0] = userSign;
+                                incorrectSelection = false;
+                            } else { // it is already occupied
+                                System.out.println("Position 6 is already occupied, choose another one");
+                            }
+                            break;
+                        case 7:
+                            if (gameBoard[2][1] == 7) { // it is not occupied
+                                gameBoard[2][1] = userSign;
+                                incorrectSelection = false;
+                            } else { // it is already occupied
+                                System.out.println("Position 7 is already occupied, choose another one");
+                            }
+                            break;
+                        case 8:
+                            if (gameBoard[2][2] == 8) { // it is not occupied
+                                gameBoard[2][2] = userSign;
+                                incorrectSelection = false;
+                            } else { // it is already occupied
+                                System.out.println("Position 8 is already occupied, choose another one");
+                            }
+                            break;
+                        default:
+                            throw new InputMismatchException("Invalid Position!");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Enter a valid number");
+                } catch (Exception e) {
+                    System.out.println("An error occurred :(");
+                    System.out.println(e.getMessage());
+                }finally {
+                    input.nextLine(); //flush the input
                 }
-            }catch (InputMismatchException e){
-                System.out.println("Enter a valid number");
-            } catch (Exception e){
-                System.out.println("An error occurred :(");
-                System.out.println(e.getMessage());
-            }
+            }while (incorrectSelection);
 
-
-
+            printBoard(gameBoard); // print it again after user has selected a position
+            //TODO check if won! after each turn
+            printHeaderFooter("Computer's turn:");
 //        6- Computer chose random position and check valid position.
 //        7- Checks if either player or Computer has won.
 //
