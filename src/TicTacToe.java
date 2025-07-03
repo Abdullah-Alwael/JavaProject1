@@ -82,7 +82,7 @@ public class TicTacToe {
                 try {
                     selectedPosition = input.nextInt();
 
-                    // set the position if not occupied
+                    // set the position if not occupied, else try again
                     incorrectSelection = isOccupiedAndSet(selectedPosition, userSign, gameBoard);
 
                     if (incorrectSelection) {
@@ -101,12 +101,25 @@ public class TicTacToe {
                 }
             } while (incorrectSelection);
 
+            incorrectSelection = true; //assume incorrect selections for the upcoming logic
+
             printBoard(gameBoard); // print it again after user has selected a position
             //TODO check if won! after each turn
+            whoWon = whoWon(gameBoard);
+
             printHeaderFooter("Computer's turn:");
 //        6- Computer chose random position and check valid position.
+            whoWon = whoWon(gameBoard);
+
 //        7- Checks if either player or Computer has won.
-//
+            if (whoWon == userSign){
+                won = true;
+                printHeaderFooter("Congratulations, you have won the game!");
+            }
+            if (whoWon == computerSign){
+                won = true;
+                printHeaderFooter("Bad Luck, the computer has won the game!");
+            }
         } while (!won); // the game loop
 
         printHeaderFooter("Game Over!");
