@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class TicTacToe {
     final static int xSign = 10; // this number will represent the x sign
-    final static int oSign = 20; // this number will represent the O sign
+    final static int oSign = 20; // this number will represent the @ sign
     final static int min = 0, max = 8; // for random number range
     static int numberOfOccupied = 0;
 
@@ -27,17 +27,19 @@ public class TicTacToe {
         int round = 0; // for the current round being played
         boolean incorrectSelection = true; // for enforcing correct selections
         int whoWon; // store the number of the sign of the winner 10 for X or 20 for Oh
-        int userSign = 0; // the sign is either 10 = X or 20 = O not zero but oh
-        int computerSign = 0; // the sign is either 10 = X or 20 = O not zero but oh
+        int userSign = 0; // the sign is either 10 = X or 20 = @ not zero but oh
+        int computerSign = 0; // the sign is either 10 = X or 20 = @ not zero but oh
         int userPoints = 0, computerPoints = 0; // for comparing who won more!
         int selectedPosition = -1;
 
         printHeaderFooter("Welcome to the Tic-tac-toe game!");
         printGameRules();
 
+//        3- Should Display a Game Board.
+        printBoard(gameBoard);
 
 //        4- Ask player position. sign?
-        System.out.println("which sign will you choose? (X or O):");
+        System.out.println("which sign will you choose? (X or @):");
         do { // force user to select correct sign
             try {
                 choice = input.next();
@@ -50,6 +52,7 @@ public class TicTacToe {
                         incorrectSelection = false;
                         break;
                     case '0':
+                    case '@':
                     case 'o':
                     case 'O':
                         userSign = oSign;
@@ -57,7 +60,7 @@ public class TicTacToe {
                         incorrectSelection = false;
                         break;
                     default:
-                        throw new InputMismatchException("This is not X or O, please try again");
+                        throw new InputMismatchException("This is not X or @, please try again");
                 }
 
             } catch (InputMismatchException e) {
@@ -71,9 +74,6 @@ public class TicTacToe {
         incorrectSelection = true; //assume incorrect selections for the upcoming logic
 
         do {
-
-//        3- Should Display a Game Board.
-            printBoard(gameBoard);
 
 //        5- Check if the position available, if not available keep asking the player to enter a valid position.
             printHeaderFooter("Your turn:");
@@ -101,18 +101,16 @@ public class TicTacToe {
                 }
             } while (incorrectSelection);
 
-            printBoard(gameBoard); // print it again after user has selected a position
+            printBoard(gameBoard); // print it again after player has selected a position
+//        7- Checks if either player or Computer has won.
             whoWon = whoWon(gameBoard); // check who won the game
 
             if (whoWon == userSign) {
                 printHeaderFooter("Congratulations, you have won the game!");
                 userPoints++;
                 break;
-            } else if (whoWon == computerSign) {
-                printHeaderFooter("Bad Luck, the computer has won the game!");
-                computerPoints++;
-                break;
-            } else if (numberOfOccupied > 8){ //no one has won the game
+            }
+            if (numberOfOccupied > 8){ //no one has won the game
                 printHeaderFooter("No more positions, it is a draw!");
                 break;
             }
@@ -137,16 +135,18 @@ public class TicTacToe {
 
             } while (incorrectSelection);
 
-            printBoard(gameBoard); // print it again after user has selected a position
+            printBoard(gameBoard); // print it again after player has selected a position
+//        7- Checks if either player or Computer has won.
             whoWon = whoWon(gameBoard); // check who won the game
 
-//        7- Checks if either player or Computer has won.
-            if (whoWon == userSign) {
-                won = true;
-                printHeaderFooter("Congratulations, you have won the game!");
-            } else if (whoWon == computerSign) {
-                won = true;
+            if (whoWon == computerSign) {
                 printHeaderFooter("Bad Luck, the computer has won the game!");
+                computerPoints++;
+                break;
+            }
+            if (numberOfOccupied > 8){ //no one has won the game
+                printHeaderFooter("No more positions, it is a draw!");
+                break;
             }
 
         } while (true); // the game loop
@@ -158,7 +158,7 @@ public class TicTacToe {
 
     //        2- Use method.
     public static int whoWon(int[][] board) {
-        int whoWon = -1; // no one has won if it does not equal to the sign number 10 = X 20 = O
+        int whoWon = -1; // no one has won if it does not equal to the sign number 10 = X 20 = @
 
         return whoWon;
     }
@@ -195,9 +195,9 @@ public class TicTacToe {
                     }
                 }
                 if (i == 10) {
-                    System.out.print("O");
-                } else if (i == 20) {
                     System.out.print("X");
+                } else if (i == 20) {
+                    System.out.print("@");
                 } else {
                     System.out.print(i);
                 }
@@ -236,7 +236,7 @@ public class TicTacToe {
         String[] rules = {
                 "Game rules:",
                 "In tic-tac-toe to win, you need to score 3 points as follows:",
-                "    there are two signs, X and O, you have to select one first",
+                "    there are two signs, X and @, you have to select one first",
                 "    score adjacent positions with the same sign in a row X X X",
                 "    or a vertical column like this: ",
                 "     X",
