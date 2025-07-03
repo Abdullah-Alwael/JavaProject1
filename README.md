@@ -1,2 +1,2 @@
 # JavaProject1
-##Tic-tac-toe Java game
+## Tic-tac-toe Java game
