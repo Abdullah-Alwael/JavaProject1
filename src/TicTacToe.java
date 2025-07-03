@@ -14,26 +14,28 @@ public class TicTacToe {
 
 //        Minimum Requirements
 //        1- Use 2D Array.
-        int[][] gameBoard = {{0,1,2},{3,4,5},{6,7,8}};
+        int[][] gameBoard = {
+                {0, 1, 2},
+                {3, 4, 5},
+                {6, 7, 8}}; // the numbers represent the position number to ask the user
+
         Scanner input = new Scanner(System.in);
         int min, max; // for random number range
         int round; // for the current round being played
         boolean won; // checking if there is a win case
         int userSign; // the sign is either 10 = X or 20 = O not zero but oh
-
-
-        int computerSign;
+        int computerSign; // the sign is either 10 = X or 20 = O not zero but oh
         int userPoints, computerPoints;
 
 //        3- Should Display a Game Board.
-        System.out.println("------------------------------Welcome to the Tic-tac-toe game!------------------------");
+        printHeaderFooter("Welcome to the Tic-tac-toe game!");
         printBoard(gameBoard);
 //        do {
 //
 //
 //        }while (true); // the game loop
 
-        System.out.println("-----------------------------------------Game Over!-----------------------------------");
+        printHeaderFooter("Game Over!");
 
 
 //        4- Ask player position.
@@ -82,5 +84,16 @@ public class TicTacToe {
 
             System.out.println();
         }
+    }
+    public static void printHeaderFooter(String message){
+        int slashes = 42;
+        for (int i = 0; i <=slashes-(message.length()/2); i++) {
+            System.out.print("-");
+        }
+        System.out.print(message);
+        for (int i = 0; i <=slashes-(message.length()/2); i++) {
+            System.out.print("-");
+        }
+        System.out.println();
     }
 }
