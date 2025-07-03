@@ -2,25 +2,31 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class TicTacToe {
+    final static int xSign = 10; // this number will represent the x sign
+    final static int oSign = 20; // this number will represent the O sign
+
     public static void main(String[] args) {
 /*
         * Rules & Guidelines
           • should use all java basics concept:
-          * Variables, Scanner, Conditions, Loops, {Arrays}, {Methods}, exception handling, switch.
+          * {Variables}, {Scanner}, {Conditions}, {Loops}, {Arrays}, {Methods}, exception handling, switch.
  */
 
 //        Minimum Requirements
 //        1- Use 2D Array.
-        int[][] gameBoard = new int[3][3];
+        int[][] gameBoard = {{0,1,2},{3,4,5},{6,7,8}};
         Scanner input = new Scanner(System.in);
-        int min, max;
-        int round;
-        boolean won;
+        int min, max; // for random number range
+        int round; // for the current round being played
+        boolean won; // checking if there is a win case
+        int userSign; // the sign is either 10 = X or 20 = O not zero but oh
+
+
+        int computerSign;
         int userPoints, computerPoints;
 
 //        3- Should Display a Game Board.
         System.out.println("------------------------------Welcome to the Tic-tac-toe game!------------------------");
-
         printBoard(gameBoard);
 //        do {
 //
@@ -47,7 +53,6 @@ public class TicTacToe {
         int verticalLines = 2;
         for (int[] raw : board) {
             for (int i : raw) {
-
                 for (int j = 0; j <= 21; j++) { // add spaces
                     if (j == 11) {
                         System.out.print("+");
@@ -55,9 +60,9 @@ public class TicTacToe {
                         System.out.print(" ");
                     }
                 }
-                if (i == 1) {
+                if (i == 10) {
                     System.out.print("O");
-                } else if (i == 2) {
+                } else if (i == 20) {
                     System.out.print("X");
                 } else {
                     System.out.print(i);
