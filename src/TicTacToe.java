@@ -23,26 +23,28 @@ public class TicTacToe {
         int min, max; // for random number range
         int round; // for the current round being played
         boolean won; // checking if there is a win case
+        int whoWon; // store the number of the sign of the winner
         int userSign; // the sign is either 10 = X or 20 = O not zero but oh
         int computerSign; // the sign is either 10 = X or 20 = O not zero but oh
         int userPoints, computerPoints;
 
 //        3- Should Display a Game Board.
         printHeaderFooter("Welcome to the Tic-tac-toe game!");
+        printGameRules();
         printBoard(gameBoard);
 //        do {
-//
-//
-//        }while (true); // the game loop
-
-        printHeaderFooter("Game Over!");
-
 
 //        4- Ask player position.
 //        5- Check if the position available, if not available keep asking the player to enter a
 //        valid position.
 //        6- Computer chose random position and check valid position.
 //        7- Checks if either player or Computer has won.
+//
+//        } while (true); // the game loop
+
+        printHeaderFooter("Game Over!");
+
+
     }
 
     //        2- Use method.
@@ -85,15 +87,48 @@ public class TicTacToe {
             System.out.println();
         }
     }
-    public static void printHeaderFooter(String message){
+
+    public static void printHeaderFooter(String message) {
         int slashes = 42;
-        for (int i = 0; i <=slashes-(message.length()/2); i++) {
+        System.out.println();
+        for (int i = 0; i <= slashes - (message.length() / 2); i++) {
             System.out.print("-");
         }
         System.out.print(message);
-        for (int i = 0; i <=slashes-(message.length()/2); i++) {
+        for (int i = 0; i <= slashes - (message.length() / 2); i++) {
             System.out.print("-");
         }
+        System.out.println();
+        System.out.println();
+    }
+
+    public static void printGameRules() {
+        String[] rules = {
+                "Game rules:",
+                "In tic-tac-toe to win, you need to score 3 points as follows:",
+                "    there are two signs, X and O, you have to select one first",
+                "    score adjacent positions with the same sign in a row X X X",
+                "    or a vertical column like this: ",
+                "     X",
+                "     X",
+                "     X",
+                "    Or diagonally like this: ",
+                "     X |",
+                "         X |",
+                "             X |",
+                "    to finally win the game!",
+                "You will be playing against the computer, good luck!"
+        };
+
+        for (String rule : rules) {
+            for (int i = 0; i <= 10; i++) {
+                System.out.print(" ");
+            }
+            System.out.print("* ");
+            System.out.print(rule);
+            System.out.println();
+        }
+
         System.out.println();
     }
 }
