@@ -158,9 +158,22 @@ public class TicTacToe {
 
     //        2- Use method.
     public static int whoWon(int[][] board) {
-        int whoWon = -1; // no one has won if it does not equal to the sign number 10 = X 20 = @
 
-        return whoWon;
+        // first check for horizontal win (3) cases
+        if (board[0][0] == board[0][1]
+        && board[0][1] == board[0][2]){ // if first row is equal example:{20 20 20} then return the value of player sign
+            return board[0][0];
+        }
+        if (board[1][0] == board[1][1]
+        && board[1][1] == board[1][2]){ //if second row is equal
+            return board[1][0];
+        }
+        if (board[2][0] == board[2][1]
+        && board[2][1] == board[2][2]){ // if third row is equal
+            return board[2][0];
+        }
+
+        return -1; // no one has won if it does not equal to the sign number 10 = X 20 = @;
     }
 
     public static int randomNumber(int min, int max) {
