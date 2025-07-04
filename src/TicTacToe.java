@@ -13,7 +13,8 @@ public class TicTacToe {
         * Rules & Guidelines
           • should use all java basics concept:
           * {Variables}, {Scanner}, {Conditions}, {Loops}, {Arrays}, {Methods}, {exception handling}, {switch}.
- */
+            surrounded means {done};
+ * */
 
 //        Minimum Requirements
 //        1- Use 2D Array.
@@ -30,7 +31,7 @@ public class TicTacToe {
         int userSign = 0; // the sign is either 10 = X or 20 = @ not zero but oh
         int computerSign = 0; // the sign is either 10 = X or 20 = @ not zero but oh
         int userPoints = 0, computerPoints = 0; // for comparing who won more!
-        int selectedPosition = -1;
+        int selectedPosition;
 
         printHeaderFooter("Welcome to the Tic-tac-toe game!");
         printGameRules();
@@ -71,13 +72,14 @@ public class TicTacToe {
             }
         } while (incorrectSelection);
 
-        incorrectSelection = true; //assume incorrect selections for the upcoming logic
 
         do {
 
 //        5- Check if the position available, if not available keep asking the player to enter a valid position.
             printHeaderFooter("Your turn:");
             System.out.println("Select a position from the numbers displayed on the board: ");
+            incorrectSelection = true; //assume incorrect selections for the upcoming logic
+
             do {
                 try {
                     selectedPosition = input.nextInt();
@@ -102,6 +104,7 @@ public class TicTacToe {
             } while (incorrectSelection);
 
             printBoard(gameBoard); // print it again after player has selected a position
+
 //        7- Checks if either player or Computer has won.
             whoWon = whoWon(gameBoard); // check who won the game
 
@@ -115,14 +118,14 @@ public class TicTacToe {
                 break;
             }
 
-            incorrectSelection = true; //assume incorrect selections for the upcoming logic
+//        6- Computer chose random position and check valid position.
             printHeaderFooter("Computer's turn:");
             System.out.println("Please wait for the computer to think . . .");
-//        6- Computer chose random position and check valid position.
+            incorrectSelection = true; //assume incorrect selections for the upcoming logic
 
             do { // make the computer try again and again until its randomly selected position is not occupied
                 try {
-                    selectedPosition = randomNumber(min,max); // not really thinking or anything
+                    selectedPosition = randomNumber(min,max); // the computer is not really thinking or anything
                     incorrectSelection = isOccupiedAndSet(selectedPosition, computerSign,gameBoard);
 
                 } catch (InputMismatchException e) {
