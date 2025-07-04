@@ -187,6 +187,16 @@ public class TicTacToe {
             return board[0][2];
         }
 
+        // third check for diagonal win cases (2)
+        if (board[0][0] == board[1][1]
+                && board[1][1] == board[2][2]){ //if first diagonal is equal
+            return board[0][0];
+        }
+        if (board[0][2] == board[1][1]
+                && board[1][1] == board[2][0]){ // if second diagonal is equal
+            return board[0][2];
+        }
+
         return -1; // no one has won if it does not equal to the sign number 10 = X 20 = @;
     }
 
