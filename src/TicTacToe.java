@@ -13,7 +13,8 @@ public class TicTacToe {
         * Rules & Guidelines
           • should use all java basics concept:
           * {Variables}, {Scanner}, {Conditions}, {Loops}, {Arrays}, {Methods}, {exception handling}, {switch}.
- */
+            surrounded means {done};
+ * */
 
 //        Minimum Requirements
 //        1- Use 2D Array.
@@ -30,7 +31,7 @@ public class TicTacToe {
         int userSign = 0; // the sign is either 10 = X or 20 = @ not zero but oh
         int computerSign = 0; // the sign is either 10 = X or 20 = @ not zero but oh
         int userPoints = 0, computerPoints = 0; // for comparing who won more!
-        int selectedPosition = -1;
+        int selectedPosition;
 
         printHeaderFooter("Welcome to the Tic-tac-toe game!");
         printGameRules();
@@ -71,13 +72,14 @@ public class TicTacToe {
             }
         } while (incorrectSelection);
 
-        incorrectSelection = true; //assume incorrect selections for the upcoming logic
 
         do {
 
 //        5- Check if the position available, if not available keep asking the player to enter a valid position.
             printHeaderFooter("Your turn:");
             System.out.println("Select a position from the numbers displayed on the board: ");
+            incorrectSelection = true; //assume incorrect selections for the upcoming logic
+
             do {
                 try {
                     selectedPosition = input.nextInt();
@@ -102,6 +104,7 @@ public class TicTacToe {
             } while (incorrectSelection);
 
             printBoard(gameBoard); // print it again after player has selected a position
+
 //        7- Checks if either player or Computer has won.
             whoWon = whoWon(gameBoard); // check who won the game
 
@@ -115,14 +118,14 @@ public class TicTacToe {
                 break;
             }
 
-            incorrectSelection = true; //assume incorrect selections for the upcoming logic
+//        6- Computer chose random position and check valid position.
             printHeaderFooter("Computer's turn:");
             System.out.println("Please wait for the computer to think . . .");
-//        6- Computer chose random position and check valid position.
+            incorrectSelection = true; //assume incorrect selections for the upcoming logic
 
             do { // make the computer try again and again until its randomly selected position is not occupied
                 try {
-                    selectedPosition = randomNumber(min,max); // not really thinking or anything
+                    selectedPosition = randomNumber(min,max); // the computer is not really thinking or anything
                     incorrectSelection = isOccupiedAndSet(selectedPosition, computerSign,gameBoard);
 
                 } catch (InputMismatchException e) {
@@ -158,9 +161,46 @@ public class TicTacToe {
 
     //        2- Use method.
     public static int whoWon(int[][] board) {
-        int whoWon = -1; // no one has won if it does not equal to the sign number 10 = X 20 = @
 
-        return whoWon;
+        // first check for horizontal win (3) cases
+        if (board[0][0] == board[0][1]
+        && board[0][1] == board[0][2]){ // if first row is equal example:{20 20 20} then return the value of player sign
+            return board[0][0];
+        }
+        if (board[1][0] == board[1][1]
+        && board[1][1] == board[1][2]){ //if second row is equal
+            return board[1][0];
+        }
+        if (board[2][0] == board[2][1]
+        && board[2][1] == board[2][2]){ // if third row is equal
+            return board[2][0];
+        }
+
+        // second check for vertical win cases (3)
+        if (board[0][0] == board[1][0]
+                && board[1][0] == board[2][0]){ // if first column is equal
+            return board[0][0];
+        }
+        if (board[0][1] == board[1][1]
+                && board[1][1] == board[2][1]){ //if second column is equal
+            return board[0][1];
+        }
+        if (board[0][2] == board[1][2]
+                && board[1][2] == board[2][2]){ // if third column is equal
+            return board[0][2];
+        }
+
+        // third check for diagonal win cases (2)
+        if (board[0][0] == board[1][1]
+                && board[1][1] == board[2][2]){ //if first diagonal is equal
+            return board[0][0];
+        }
+        if (board[0][2] == board[1][1]
+                && board[1][1] == board[2][0]){ // if second diagonal is equal
+            return board[0][2];
+        }
+
+        return -1; // no one has won if it does not equal to the sign number 10 = X 20 = @;
     }
 
     public static int randomNumber(int min, int max) {
