@@ -25,7 +25,7 @@ public class TicTacToe {
 
         Scanner input = new Scanner(System.in);
         String choice;
-        int round = 0; // for the current round being played
+        int round = 0, rounds = 0, selection; // for the current and max round(s) being played
         boolean incorrectSelection = true; // for enforcing correct selections
         int whoWon; // store the number of the sign of the winner 10 for X or 20 for Oh
         int userSign = 0; // the sign is either 10 = X or 20 = @ not zero but oh
@@ -35,9 +35,6 @@ public class TicTacToe {
 
         printHeaderFooter("Welcome to the Tic-tac-toe game!");
         printGameRules();
-
-//        3- Should Display a Game Board.
-        printBoard(gameBoard);
 
 //        4- Ask player position. sign?
         System.out.println("which sign will you choose? (X or @):");
@@ -72,87 +69,147 @@ public class TicTacToe {
             }
         } while (incorrectSelection);
 
+        // Extra credits:
+        // The user has two options:
+        System.out.println("          * Select game mode:");
+        System.out.println("               * 1: Play one round");
+        System.out.println("               * 2: Play 3 rounds and then determine the winner");
+        incorrectSelection = true; //assume incorrect selections for the upcoming logic
 
-        do {
+        do { // force user to select correct option
+            try {
+                selection = input.nextInt();
 
-//        5- Check if the position available, if not available keep asking the player to enter a valid position.
-            printHeaderFooter("Your turn:");
-            System.out.println("Select a position from the numbers displayed on the board: ");
-            incorrectSelection = true; //assume incorrect selections for the upcoming logic
+                switch (selection) {
+                    case 1:
+                        rounds = 1;
+                        incorrectSelection = false;
+                        break;
+                    case 2:
+                        rounds = 3;
+                        incorrectSelection = false;
+                        break;
+                    default:
+                        throw new InputMismatchException("This is not an option, please try again");
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Select a valid option");
+            } catch (Exception e) {
+                System.out.println("An error occurred :(");
+                System.out.println(e.getMessage());
+            } finally {
+                input.nextLine();
+            }
+        } while (incorrectSelection);
+
+        for (int i = 0; i <= rounds - 1; i++) {
+
+            round++;
+            if (rounds != 1) { // if the rounds are not only 1 round, display score
+                printHeaderFooter("Round " + round);
+                printHeaderFooter("User points = " + userPoints + ", computer points = " + computerPoints);
+            }
+            // 3- Should Display a Game Board.
+            printBoard(gameBoard);
 
             do {
-                try {
-                    selectedPosition = input.nextInt();
 
-                    // set the position if not occupied, else try again
-                    incorrectSelection = isOccupiedAndSet(selectedPosition, userSign, gameBoard);
+//        5- Check if the position available, if not available keep asking the player to enter a valid position.
+                printHeaderFooter("Your turn:");
+                System.out.println("Select a position from the numbers displayed on the board: ");
+                incorrectSelection = true; //assume incorrect selections for the upcoming logic
 
-                    if (incorrectSelection) {
-                        System.out.println("Position " + selectedPosition
-                                + " is already occupied, choose another one");
+                do {
+                    try {
+                        selectedPosition = input.nextInt();
+
+                        // set the position if not occupied, else try again
+                        incorrectSelection = isOccupiedAndSet(selectedPosition, userSign, gameBoard);
+
+                        if (incorrectSelection) {
+                            System.out.println("Position " + selectedPosition
+                                    + " is already occupied, choose another one");
+                        }
+
+                    } catch (InputMismatchException e) {
+                        System.out.println(e.getMessage());
+                        System.out.println("Enter a valid number");
+                    } catch (Exception e) {
+                        System.out.println("An error occurred :(");
+                        System.out.println(e.getMessage());
+                    } finally {
+                        input.nextLine(); //flush the input
                     }
+                } while (incorrectSelection);
 
-                } catch (InputMismatchException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("Enter a valid number");
-                } catch (Exception e) {
-                    System.out.println("An error occurred :(");
-                    System.out.println(e.getMessage());
-                } finally {
-                    input.nextLine(); //flush the input
-                }
-            } while (incorrectSelection);
-
-            printBoard(gameBoard); // print it again after player has selected a position
+                printBoard(gameBoard); // print it again after player has selected a position
 
 //        7- Checks if either player or Computer has won.
-            whoWon = whoWon(gameBoard); // check who won the game
+                whoWon = whoWon(gameBoard); // check who won the game
 
-            if (whoWon == userSign) {
-                printHeaderFooter("Congratulations, you have won the game!");
-                userPoints++;
-                break;
-            }
-            if (numberOfOccupied > 8){ //no one has won the game
-                printHeaderFooter("No more positions, it is a draw!");
-                break;
-            }
+                if (whoWon == userSign) {
+                    printHeaderFooter("Congratulations, you have won this round!");
+                    userPoints++;
+                    break;
+                }
+                if (numberOfOccupied > 8) { //no one has won the game
+                    printHeaderFooter("No more positions, it is a draw!");
+                    break;
+                }
 
 //        6- Computer chose random position and check valid position.
-            printHeaderFooter("Computer's turn:");
-            System.out.println("Please wait for the computer to think . . .");
-            incorrectSelection = true; //assume incorrect selections for the upcoming logic
+                printHeaderFooter("Computer's turn:");
+                System.out.println("Please wait for the computer to think . . .");
+                incorrectSelection = true; //assume incorrect selections for the upcoming logic
 
-            do { // make the computer try again and again until its randomly selected position is not occupied
-                try {
-                    selectedPosition = randomNumber(min,max); // the computer is not really thinking or anything
-                    incorrectSelection = isOccupiedAndSet(selectedPosition, computerSign,gameBoard);
+                do { // make the computer try again and again until its randomly selected position is not occupied
+                    try {
+                        selectedPosition = randomNumber(min, max); // the computer is not really thinking or anything
+                        incorrectSelection = isOccupiedAndSet(selectedPosition, computerSign, gameBoard);
 
-                } catch (InputMismatchException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("Enter a valid number");
-                } catch (Exception e) {
-                    System.out.println("An error occurred :(");
-                    System.out.println(e.getMessage());
+                    } catch (InputMismatchException e) {
+                        System.out.println(e.getMessage());
+                        System.out.println("Enter a valid number");
+                    } catch (Exception e) {
+                        System.out.println("An error occurred :(");
+                        System.out.println(e.getMessage());
+                    }
+
+                } while (incorrectSelection);
+
+                printBoard(gameBoard); // print it again after player has selected a position
+//        7- Checks if either player or Computer has won.
+                whoWon = whoWon(gameBoard); // check who won the game
+
+                if (whoWon == computerSign) {
+                    printHeaderFooter("Bad Luck, the computer has won this round!");
+                    computerPoints++;
+                    break;
+                }
+                if (numberOfOccupied > 8) { //no one has won the game
+                    printHeaderFooter("No more positions, it is a draw!");
+                    break;
                 }
 
-            } while (incorrectSelection);
+            } while (true); // the game loop
 
-            printBoard(gameBoard); // print it again after player has selected a position
-//        7- Checks if either player or Computer has won.
-            whoWon = whoWon(gameBoard); // check who won the game
-
-            if (whoWon == computerSign) {
-                printHeaderFooter("Bad Luck, the computer has won the game!");
-                computerPoints++;
+            if (userPoints > 1) {
+                printHeaderFooter("User points = " + userPoints + ", computer points = " + computerPoints);
+                printHeaderFooter("Congratulations, you won more rounds!");
                 break;
             }
-            if (numberOfOccupied > 8){ //no one has won the game
-                printHeaderFooter("No more positions, it is a draw!");
+            if (computerPoints > 1) {
+                printHeaderFooter("User points = " + userPoints + ", computer points = " + computerPoints);
+                printHeaderFooter("Bad Luck, the computer has won more rounds!");
                 break;
             }
 
-        } while (true); // the game loop
+            // reset the board
+            resetTheBoard(gameBoard);
+        } // the rounds loop
+
 
         printHeaderFooter("Game Over!");
 
@@ -160,43 +217,53 @@ public class TicTacToe {
     } // End of Main
 
     //        2- Use method.
+    public static void resetTheBoard(int[][] board){
+        int number = 0;
+        numberOfOccupied = 0;
+        for (int i = 0; i <= board.length-1; i++) {
+            for (int j = 0; j <=board[i].length-1 ; j++) {
+                board[i][j] = number;
+                number++;
+            }
+        }
+    }
     public static int whoWon(int[][] board) {
 
         // first check for horizontal win (3) cases
         if (board[0][0] == board[0][1]
-        && board[0][1] == board[0][2]){ // if first row is equal example:{20 20 20} then return the value of player sign
+                && board[0][1] == board[0][2]) { // if first row is equal example:{20 20 20} then return the value of player sign
             return board[0][0];
         }
         if (board[1][0] == board[1][1]
-        && board[1][1] == board[1][2]){ //if second row is equal
+                && board[1][1] == board[1][2]) { //if second row is equal
             return board[1][0];
         }
         if (board[2][0] == board[2][1]
-        && board[2][1] == board[2][2]){ // if third row is equal
+                && board[2][1] == board[2][2]) { // if third row is equal
             return board[2][0];
         }
 
         // second check for vertical win cases (3)
         if (board[0][0] == board[1][0]
-                && board[1][0] == board[2][0]){ // if first column is equal
+                && board[1][0] == board[2][0]) { // if first column is equal
             return board[0][0];
         }
         if (board[0][1] == board[1][1]
-                && board[1][1] == board[2][1]){ //if second column is equal
+                && board[1][1] == board[2][1]) { //if second column is equal
             return board[0][1];
         }
         if (board[0][2] == board[1][2]
-                && board[1][2] == board[2][2]){ // if third column is equal
+                && board[1][2] == board[2][2]) { // if third column is equal
             return board[0][2];
         }
 
         // third check for diagonal win cases (2)
         if (board[0][0] == board[1][1]
-                && board[1][1] == board[2][2]){ //if first diagonal is equal
+                && board[1][1] == board[2][2]) { //if first diagonal is equal
             return board[0][0];
         }
         if (board[0][2] == board[1][1]
-                && board[1][1] == board[2][0]){ // if second diagonal is equal
+                && board[1][1] == board[2][0]) { // if second diagonal is equal
             return board[0][2];
         }
 
@@ -268,7 +335,6 @@ public class TicTacToe {
         for (int i = 0; i <= slashes - (message.length() / 2); i++) {
             System.out.print("-");
         }
-        System.out.println();
         System.out.println();
     }
 
