@@ -197,12 +197,12 @@ public class TicTacToe {
 
             if (userPoints > 1) {
                 printHeaderFooter("User points = " + userPoints + ", computer points = " + computerPoints);
-                printHeaderFooter("Congratulations, you won more rounds!");
+                printHeaderFooter("Congratulations, you won the game!");
                 break;
             }
             if (computerPoints > 1) {
                 printHeaderFooter("User points = " + userPoints + ", computer points = " + computerPoints);
-                printHeaderFooter("Bad Luck, the computer has won more rounds!");
+                printHeaderFooter("Bad Luck, the computer has won the game!");
                 break;
             }
 
@@ -276,28 +276,38 @@ public class TicTacToe {
     }
 
     public static void printBoard(int[][] board) {
-        int verticalLines = 2;
-        int horizontalLines = 6;
+        int lines = 2;
+        int verticalLines = lines;
+        int horizontalLines = lines;
+        boolean startOfRow;
+        int numberOfSignsToPrint;
 
-        for (int[] raw : board) {
+        for (int[] row : board) {
+            startOfRow = true;
+            numberOfSignsToPrint = 3;
 
-            if (horizontalLines > 0) {
-                for (int j = 0; j <= 85; j++) { // add vertical lines
+            while (verticalLines > 0) {
+                for (int j = 0; j <= 57; j++) { // add vertical lines
                     if (j == 34 || j == 57) {
-                        System.out.print("+");
+                        System.out.print("┃");
                     } else {
                         System.out.print(" ");
                     }
                 }
-                horizontalLines--;
+                verticalLines--;
                 System.out.println();
             }
 
-            for (int i : raw) {
-                for (int j = 0; j <= 21; j++) { // add spaces
-                    if (j == 11) {
-                        System.out.print("+");
-                    } else {
+            verticalLines = lines;
+
+            for (int i : row) {// add spaces and signs
+                if (startOfRow){
+                    for (int j = 0; j <= 21; j++) {
+                        System.out.print(" ");
+                    }
+
+                } else {
+                    for (int j = 0; j <= 10; j++) {
                         System.out.print(" ");
                     }
                 }
@@ -308,17 +318,50 @@ public class TicTacToe {
                 } else {
                     System.out.print(i);
                 }
+                numberOfSignsToPrint--;
+
+                if (startOfRow){
+                    for (int j = 0; j <= 10; j++) {
+                        System.out.print(" ");
+                    }
+                    System.out.print("┃");
+                    startOfRow = false;
+                } else if (numberOfSignsToPrint !=0){
+                    for (int j = 0; j <= 9; j++) {
+                        System.out.print(" ");
+                    }
+                    System.out.print("┃");
+
+                }
+
             }
+
             System.out.println();
-            if (verticalLines > 0) {
-                for (int j = 0; j <= 85; j++) { // add vertical lines
+            while (verticalLines > 0) {
+                for (int j = 0; j <= 57; j++) { // add vertical lines
                     if (j == 34 || j == 57) {
-                        System.out.print("+");
+                        System.out.print("┃");
                     } else {
-                        System.out.print("_");
+                        System.out.print(" ");
                     }
                 }
                 verticalLines--;
+                System.out.println();
+            }
+
+            verticalLines = lines;
+
+            if (horizontalLines > 0) {
+                for (int j = 0; j <= 82; j++) { // add horizontal lines ___+___
+                    if (j == 34 || j == 57) {
+                        System.out.print("┃");
+                    } else if (j > 10){
+                        System.out.print("━");
+                    } else {
+                        System.out.print(" ");
+                    }
+                }
+                horizontalLines--;
             }
 
             System.out.println();
@@ -327,7 +370,6 @@ public class TicTacToe {
 
     public static void printHeaderFooter(String message) {
         int slashes = 42;
-        System.out.println();
         for (int i = 0; i <= slashes - (message.length() / 2); i++) {
             System.out.print("-");
         }
